@@ -50,16 +50,7 @@ public class DealerController {
 		
 		return "view-dealer";
 	}
-	
-	/**@RequestMapping(value = "/dealer/delete", method = RequestMethod.GET)
-	private String deleteDealer(@RequestParam("dealerId") long id, Model model) {
-		Optional<DealerModel> dealer = dealerService.getDealerDetailById(id);
-		if (dealer.isPresent()) {
-			dealerService.deleteDealer(dealer.get());
-			return "delete";
-		}
-		return "error";
-	}**/
+
 	
 	@RequestMapping(value = "/dealer/delete", method =RequestMethod.GET)
 	private String deleteDealer(String dealerId, Model model) {
