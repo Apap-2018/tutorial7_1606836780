@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title>View</title>
+	</head>
+	<body>
+		<h3 th:text="'Alamat : ' + ${dealer.alamat}"></h3>
+		<h3 th:text="'Telfon : ' + ${dealer.noTelp}"></h3>
+		
+		<h4><a th:href="@{/dealer/update/} + ${id}">Update Dealer</a></h4>
+		
+		<table>
+		<thead>
+			<tr>
+				<td>Brand</td>
+				<td>Type</td>
+				<td>Price</td>
+				<td>Amount</td>
+				<td>Action</td>
+				<td>Update</td>
+			</tr>
+		<thead/>
+		<tbody>
+			<div th:each="car : ${listCar}">
+				<tr>
+					<td th:text="${car.brand}"></td>
+					<td th:text="${car.type}"></td>
+					<td th:text="${car.price}"></td>
+					<td th:text="${car.amount}"></td>
+					<td><a th:href="@{/car/delete/} + ${car.id}">Delete Car</a></td>
+					<td><a th:href="@{/car/update/} + ${car.id}">Update Car</a></td>
+				</tr>
+			</div>
+		</tbody>
+		</table> 
+		
+		<a th:href="@{/car/add/} + ${id}"> Add Car </a>
+		
+		<form th:action="@{/dealer/delete}" th:object="${dealer}" method="GET">
+			<input  type="hidden" th:value="${dealer.id}" name="dealerId"></input>
+			<button type="submit" >delete dealer</button>
+		</form>
+	</body>
+	</html>
