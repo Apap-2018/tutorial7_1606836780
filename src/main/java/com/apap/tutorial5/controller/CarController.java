@@ -1,12 +1,12 @@
-package com.apap.tutorial4.controller;
-
-import com.apap.tutorial4.model.*;
-import com.apap.tutorial4.service.*;
+package com.apap.tutorial5.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.apap.tutorial5.model.*;
+import com.apap.tutorial5.service.*;
 
 @Controller
 public class CarController {
@@ -32,12 +32,20 @@ public class CarController {
 		return "add";
 	}
 	
-	@RequestMapping(value = "/car/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/car/delete", method = RequestMethod.POST)
+	private String delete(@ModelAttribute DealerModel dealer,Model model) {
+		for(CarModel car : dealer.getListCar()) {
+			carService.deleteCar(car);
+		}
+		return "delete";
+	}
+	
+/*	@RequestMapping(value = "/car/delete/{id}", method = RequestMethod.GET)
 	private String deleteCar(@PathVariable long id) {
 		CarModel car = carService.getCar(id);
 		carService.deleteCar(car);
 		return "delete";
-	}
+	}*/
 	
 	@RequestMapping(value = "/car/update/{id}", method = RequestMethod.GET)
 	private String updateCar(@PathVariable(value = "id") long id, Model model) {

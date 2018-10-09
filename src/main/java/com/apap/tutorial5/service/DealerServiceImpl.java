@@ -1,4 +1,4 @@
-package com.apap.tutorial4.service;
+package com.apap.tutorial5.service;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apap.tutorial4.model.CarModel;
-import com.apap.tutorial4.model.DealerModel;
-import com.apap.tutorial4.repository.DealerDb;
+import com.apap.tutorial5.model.CarModel;
+import com.apap.tutorial5.model.DealerModel;
+import com.apap.tutorial5.repository.DealerDb;
 
 @Service
 @Transactional

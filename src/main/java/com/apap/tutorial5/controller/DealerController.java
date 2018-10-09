@@ -1,16 +1,16 @@
-package com.apap.tutorial4.controller;
+package com.apap.tutorial5.controller;
 
 import java.util.List;
-
-import com.apap.tutorial4.model.*;
-import com.apap.tutorial4.repository.CarDb;
-import com.apap.tutorial4.repository.DealerDb;
-import com.apap.tutorial4.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.apap.tutorial5.model.*;
+import com.apap.tutorial5.repository.CarDb;
+import com.apap.tutorial5.repository.DealerDb;
+import com.apap.tutorial5.service.*;
 
 import java.util.Optional;
 
@@ -43,6 +43,9 @@ public class DealerController {
 	private String viewDealer(@RequestParam ("dealerId") long dealerId, Model model) {
 		DealerModel dealer = dealerService.getDealerDetailById(dealerId).get();
 		long addCarId = dealerId;
+		
+		List<CarModel> archiveListCar = carService.sortByPriceDesc(dealerId);
+		dealer.setListCar(archiveListCar);
 		
 		model.addAttribute("dealer", dealer);
 		model.addAttribute("id", addCarId);
