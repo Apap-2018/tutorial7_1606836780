@@ -2,9 +2,12 @@
 	<html xmlns:th="http://www.thymeleaf.org">
 
 	<head>
-		<title>View</title>
+		<title th:replace="fragments/fragment :: headerFragment('View All')"></title>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 	</head>
 	<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<div th:each="dealer : ${listDealer}">
 		<h3 th:text="'Alamat : ' + ${dealer.alamat}"></h3>
 		<h3 th:text="'Telfon : ' + ${dealer.noTelp}"></h3>

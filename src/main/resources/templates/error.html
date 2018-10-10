@@ -2,7 +2,9 @@
 	<html xmlns:th="http://www.thymeleaf.org">
 
 	<head>
-		<title>ERROR</title>
+		<title th:replace="fragments/fragment :: headerFragment('ERROR')"></title>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 	</head>
 
 	<body>
