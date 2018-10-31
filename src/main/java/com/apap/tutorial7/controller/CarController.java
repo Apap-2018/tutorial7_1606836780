@@ -60,7 +60,7 @@ public class CarController {
 	private CarModel viewCar(@PathVariable("carId") long carId) {
 		CarModel car = carService.getCar(carId);
 		car.setDealer(null);
-		return carService.getCar(carId);
+		return car;
 	}
 	
 	@GetMapping()
