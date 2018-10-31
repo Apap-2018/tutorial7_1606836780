@@ -25,32 +25,37 @@ public class CarController {
 	private DealerService dealerService;
 	
 	@PutMapping(value="/{carId}")
-	private String updateCarSubmit(
-			@PathVariable(value = "carId") long carId,
-			@RequestParam("brand") String brand,
-			@RequestParam("type") String type,
-			@RequestParam("price") String price, 
-			@RequestParam("amount") String amount, 
-			@RequestParam("dealerId") String dealerId) {
-		
+	private String updateCarSubmit(@PathVariable(value="carId") long carId, @RequestParam("brand") String brand, @RequestParam("type") String type, @RequestParam("price") String price, @RequestParam("amount") String amount, @RequestParam("dealerId") String dealerId) {
 		CarModel car = (CarModel) carService.getCar(carId);
-		DealerModel dealer = (DealerModel) dealerService.getDealerDetailById(Long.parseLong(dealerId)).get();
 		
-		if (car.equals(null)) {
+		if(car.equals(null)) {
 			return "Can't find your car";
 		}
-		
-		car.setAmount(Integer.parseInt(amount));
-		car.setId(carId);
-		car.setBrand(brand);
-		car.setDealer(dealer);
-		car.setPrice(Long.parseLong(price));
-		car.setType(type);
+		if(brand != null) {
+			car.setBrand(brand);
+		}
+		if (type!= null) {
+			car.setType(type);
+		}
+		if (price!=null) {
+			car.setPrice(Long.parseLong(price));
+		}
+		if(amount!=null) {
+			car.setAmount(Integer.parseInt(amount));
+		}
+		if (dealerId!=null) {
+			DealerModel dealer = (DealerModel) dealerService.getDealerDetailById(Long.parseLong(dealerId)).get();
+			car.setDealer(dealer);
+		}
+//		car.setAmount(Integer.parseInt(amount));
+//		car.setBrand(brand);
+//		car.setDealer(dealer);
+//		car.setId(carId);
+//		car.setPrice(Long.parseLong(price));
+//		car.setType(type);
 		carService.updateCar(carId, car);
 		return "car update success";
-		
 	}
-	
 	@GetMapping(value="/{carId}")
 	private CarModel viewCar(@PathVariable("carId") long carId) {
 		CarModel car = carService.getCar(carId);
@@ -69,7 +74,7 @@ public class CarController {
 		
 	}
 	
-	@DeleteMapping(value="/{carId}")
+	@DeleteMapping(value="/{carId}")	
 	private String deleteCar(@PathVariable("carId") long carId) {
 		CarModel car = carService.getCar(carId);
 		carService.deleteCar(car);
