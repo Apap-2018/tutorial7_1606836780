@@ -1,6 +1,7 @@
-package com.apap.tutorial5.controller;
+package com.apap.tutorial7.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import com.apap.tutorial5.model.*;
-import com.apap.tutorial5.service.*;
+import com.apap.tutorial7.model.*;
+import com.apap.tutorial7.service.*;
+import com.apap.tutorial7.model.CarModel;
 
-@Controller
+@RestController
+@RequestMapping("/car")
 public class CarController {
 	@Autowired
 	private CarService carService;
@@ -21,7 +24,64 @@ public class CarController {
 	@Autowired
 	private DealerService dealerService;
 	
-	@RequestMapping(value = "/car/add/{dealerId}", method = RequestMethod.GET)
+	@PutMapping(value="/{carId}")
+	private String updateCarSubmit(
+			@PathVariable(value = "carId") long carId,
+			@RequestParam("brand") String brand,
+			@RequestParam("type") String type,
+			@RequestParam("price") String price, 
+			@RequestParam("amount") String amount, 
+			@RequestParam("dealerId") String dealerId) {
+		
+		CarModel car = (CarModel) carService.getCar(carId);
+		DealerModel dealer = (DealerModel) dealerService.getDealerDetailById(Long.parseLong(dealerId)).get();
+		
+		if (car.equals(null)) {
+			return "Can't find your car";
+		}
+		
+		car.setAmount(Integer.parseInt(amount));
+		car.setId(carId);
+		car.setBrand(brand);
+		car.setDealer(dealer);
+		car.setPrice(Long.parseLong(price));
+		car.setType(type);
+		carService.updateCar(carId, car);
+		return "car update success";
+		
+	}
+	
+	@GetMapping(value="/{carId}")
+	private CarModel viewCar(@PathVariable("carId") long carId) {
+		CarModel car = carService.getCar(carId);
+		car.setDealer(null);
+		return carService.getCar(carId);
+	}
+	
+	@GetMapping()
+	private List<CarModel> viewAllCar(){
+		List<CarModel> listCar = carService.getAllCar();
+		for (CarModel car : listCar) {
+			car.setDealer(null);
+			
+		}
+		return listCar;
+		
+	}
+	
+	@DeleteMapping(value="/{carId}")
+	private String deleteCar(@PathVariable("carId") long carId) {
+		CarModel car = carService.getCar(carId);
+		carService.deleteCar(car);
+		return "car has been deleted";
+	}
+	
+	@PostMapping(value="/add")
+	private CarModel addCarSubmit(@RequestBody CarModel car) {
+		return carService.addCar(car);
+	}
+	
+/*	@RequestMapping(value = "/car/add/{dealerId}", method = RequestMethod.GET)
 	private String add(@PathVariable(value = "dealerId") Long dealerId, Model model) {
 		//CarModel car = new CarModel();
 		DealerModel dealer  = dealerService.getDealerDetailById(dealerId).get();
@@ -57,12 +117,12 @@ public class CarController {
 		return "delete";
 	}
 	
-/*	@RequestMapping(value = "/car/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/car/delete/{id}", method = RequestMethod.GET)
 	private String deleteCar(@PathVariable long id) {
 		CarModel car = carService.getCar(id);
 		carService.deleteCar(car);
 		return "delete";
-	}*/
+	}
 	
 	@RequestMapping(value = "/car/update/{id}", method = RequestMethod.GET)
 	private String updateCar(@PathVariable(value = "id") long id, Model model) {
@@ -94,7 +154,7 @@ public class CarController {
 	    
 	    model.addAttribute("dealer", dealer);
 	    return "addCar";
-	}
+	}*/
 	
 	
 }
